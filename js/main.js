@@ -1,4 +1,7 @@
+// @flow
+
 import Sketch from 'sketch-js';
+import './creatures';
 
 
 Sketch.create({
