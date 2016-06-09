@@ -1,10 +1,10 @@
 {
-  "name": "farm",
+  "name": "petri",
   "version": "1.0.0",
   "main": "js/main.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rolyatmax/farm.git"
+    "url": "git+https://github.com/rolyatmax/petri.git"
   },
   "scripts": {
     "build": "webpack",

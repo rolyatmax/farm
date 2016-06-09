@@ -1,4 +1,4 @@
-# farm
+# petri
 
 ```shell
 npm run serve
