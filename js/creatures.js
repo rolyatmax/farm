@@ -59,9 +59,8 @@ export function mergeDNA(dna1: string, dna2: string): string {
   return dna.join('');
 }
 
-export function createCreature(position: Vector, dna: string): Creature {
+export function createCreature(position: Vector, birthdate: number, dna: string): Creature {
   const lifespan = DEFAULT_LIFESPAN;
-  const birthdate = Date.now();
   return {
     dna,
     lifespan,

@@ -20,14 +20,15 @@ const sketch = Sketch.create({
     while (i--) {
       const position = [rand(this.width), rand(this.height)];
       const dna = createRandomDNA();
-      creatures.push(createCreature(position, dna));
+      const birthdate = this.millis;
+      creatures.push(createCreature(position, birthdate, dna));
     }
   },
   setup() {
     this.createPopulation();
   },
   update() {
-    creatures = creatures.filter((c) => c.birthdate + c.lifespan > Date.now());
+    creatures = creatures.filter((c) => c.birthdate + c.lifespan > this.millis);
     creatures = creatures.filter((c) => {
       const dX = c.position[0] - this.mouse.x;
       const dY = c.position[1] - this.mouse.y;
@@ -39,12 +40,16 @@ const sketch = Sketch.create({
       const mate = procreators[rand(procreators.length)];
       const dna = mergeDNA(c.dna, mate.dna);
       const position = [rand(this.width), rand(this.height)];
-      creatures.push(createCreature(position, dna));
+      const birthdate = this.millis;
+      creatures.push(createCreature(position, birthdate, dna));
     });
     if (!creatures.length) this.createPopulation();
   },
   draw() {
     creatures.forEach((c) => drawCreature(this, c));
+  },
+  keydown() {
+    if (this.keys.SPACE) this.toggle();
   },
 });
 

@@ -71,7 +71,8 @@
 	    while (i--) {
 	      var position = [(0, _utils.rand)(this.width), (0, _utils.rand)(this.height)];
 	      var dna = (0, _creatures.createRandomDNA)();
-	      creatures.push((0, _creatures.createCreature)(position, dna));
+	      var birthdate = this.millis;
+	      creatures.push((0, _creatures.createCreature)(position, birthdate, dna));
 	    }
 	  },
 	  setup: function setup() {
@@ -81,7 +82,7 @@
 	    var _this = this;
 	
 	    creatures = creatures.filter(function (c) {
-	      return c.birthdate + c.lifespan > Date.now();
+	      return c.birthdate + c.lifespan > _this.millis;
 	    });
 	    creatures = creatures.filter(function (c) {
 	      var dX = c.position[0] - _this.mouse.x;
@@ -98,7 +99,8 @@
 	      var mate = procreators[(0, _utils.rand)(procreators.length)];
 	      var dna = (0, _creatures.mergeDNA)(c.dna, mate.dna);
 	      var position = [(0, _utils.rand)(_this.width), (0, _utils.rand)(_this.height)];
-	      creatures.push((0, _creatures.createCreature)(position, dna));
+	      var birthdate = _this.millis;
+	      creatures.push((0, _creatures.createCreature)(position, birthdate, dna));
 	    });
 	    if (!creatures.length) this.createPopulation();
 	  },
@@ -108,6 +110,9 @@
 	    creatures.forEach(function (c) {
 	      return (0, _creatures.drawCreature)(_this2, c);
 	    });
+	  },
+	  keydown: function keydown() {
+	    if (this.keys.SPACE) this.toggle();
 	  }
 	});
 	
@@ -854,9 +859,8 @@
 	  return dna.join('');
 	}
 	
-	function createCreature(position, dna) {
+	function createCreature(position, birthdate, dna) {
 	  var lifespan = _settings.DEFAULT_LIFESPAN;
-	  var birthdate = Date.now();
 	  return _extends({
 	    dna: dna,
 	    lifespan: lifespan,
