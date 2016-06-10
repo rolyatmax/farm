@@ -30,6 +30,7 @@ const sketch = Sketch.create({
   update() {
     creatures = creatures.filter((c) => c.birthdate + c.lifespan > this.millis);
     creatures = creatures.filter((c) => {
+      if (!this.dragging) return true;
       const dX = c.position[0] - this.mouse.x;
       const dY = c.position[1] - this.mouse.y;
       return Math.sqrt(dX * dX + dY * dY) > KILL_ZONE + c.size;

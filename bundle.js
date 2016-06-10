@@ -85,6 +85,7 @@
 	      return c.birthdate + c.lifespan > _this.millis;
 	    });
 	    creatures = creatures.filter(function (c) {
+	      if (!_this.dragging) return true;
 	      var dX = c.position[0] - _this.mouse.x;
 	      var dY = c.position[1] - _this.mouse.y;
 	      return Math.sqrt(dX * dX + dY * dY) > _settings.KILL_ZONE + c.size;
@@ -830,28 +831,27 @@
 	
 	// eslint-disable-line
 	
+	var genes = '1234567890';
+	
 	function dnaToProps(dna) {
 	  return {
 	    size: (0, _utils.pI)(dna.slice(0, 2)),
-	    color: [(0, _utils.pI)(dna.slice(2, 5)), (0, _utils.pI)(dna.slice(5, 8)), (0, _utils.pI)(dna.slice(8, 11)), Math.max(0.1, (0, _utils.pI)(dna.slice(11, 13)) / 120)],
+	    color: [(0, _utils.pI)(dna.slice(2, 5)) / 1000 * 256 | 0, (0, _utils.pI)(dna.slice(5, 8)) / 1000 * 256 | 0, (0, _utils.pI)(dna.slice(8, 11)) / 1000 * 256 | 0, Math.max(0.1, (0, _utils.pI)(dna.slice(11, 13)) / 120)],
 	    velocity: [((0, _utils.pI)(dna.slice(13, 15)) - 50) / 25, ((0, _utils.pI)(dna.slice(15, 17)) - 50) / 25]
 	  };
 	}
 	
 	function createRandomDNA() {
-	  var size = (0, _utils.leftPad)((0, _utils.rand)(100), 2);
-	  var r = (0, _utils.leftPad)((0, _utils.rand)(256), 3);
-	  var g = (0, _utils.leftPad)((0, _utils.rand)(256), 3);
-	  var b = (0, _utils.leftPad)((0, _utils.rand)(256), 3);
-	  var a = (0, _utils.leftPad)((0, _utils.rand)(100), 2);
-	  var x = (0, _utils.leftPad)((0, _utils.rand)(100), 2);
-	  var y = (0, _utils.leftPad)((0, _utils.rand)(100), 2);
-	  return [size, r, g, b, a, x, y].join('');
+	  var dnaLength = 17;
+	  var dna = '';
+	  while (dnaLength--) {
+	    dna += genes[(0, _utils.rand)(genes.length)];
+	  }
+	  return dna;
 	}
 	
 	function mergeDNA(dna1, dna2) {
 	  var cut = (0, _utils.rand)(dna1.length);
-	  var genes = '1234567890';
 	  var dna = (dna1.slice(0, cut) + dna2.slice(cut)).split('');
 	  for (var i = 0; i < dna.length; i++) {
 	    if (Math.random() < _settings.MUTATION_RATE) dna[i] = genes[(0, _utils.rand)(genes.length)];
@@ -912,11 +912,11 @@
 	(0, _expect2.default)((0, _utils.leftPad)(15, 2)).toBe('15');
 	(0, _expect2.default)((0, _utils.leftPad)('15', 4)).toBe('0015');
 	(0, _expect2.default)(mergeDNA('abcdefg', 'hijklmn').length).toBe(7, 'mergeDNA: output length does not match');
-	var dnaTestIn = ['12', '053', '012', '245', '21', '75', '30'].join('');
+	var dnaTestIn = ['12', '500', '250', '999', '21', '75', '30'].join('');
 	var dnaTestOut = dnaToProps(dnaTestIn);
 	(0, _expect2.default)(dnaTestOut).toEqual({
 	  size: 12,
-	  color: [53, 12, 245, 0.175],
+	  color: [128, 64, 255, 0.175],
 	  velocity: [1, -0.8]
 	}, 'dnaToProps: output does not match input.\n\ninput: ' + dnaTestIn + ' \n\noutput: ' + dnaTestOut);
 	console.log('Tests pass!');
