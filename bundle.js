@@ -70,10 +70,16 @@
 	}, 3000);
 	
 	var creatures = [];
+	var container = document.getElementById('wrapper');
 	
 	var sketch = _sketchJs2.default.create({
+	  container: container,
 	  autopause: false,
-	  container: document.getElementById('wrapper'),
+	  fullscreen: false,
+	  retina: true,
+	  globals: false,
+	  width: container.getBoundingClientRect().width,
+	  height: container.getBoundingClientRect().height,
 	
 	  createPopulation: function createPopulation() {
 	    var i = _settings.COUNT;
@@ -123,6 +129,19 @@
 	  },
 	  keydown: function keydown() {
 	    if (this.keys.SPACE) this.toggle();
+	  },
+	  resize: function resize() {
+	    var _container$getBoundin = container.getBoundingClientRect();
+	
+	    var width = _container$getBoundin.width;
+	    var height = _container$getBoundin.height;
+	
+	    this.canvas.style.height = height + 'px';
+	    this.canvas.style.width = width + 'px';
+	    this.canvas.height = height;
+	    this.canvas.width = width;
+	    this.height = height;
+	    this.width = width;
 	  }
 	});
 	

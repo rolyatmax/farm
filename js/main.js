@@ -14,10 +14,16 @@ const info = new InfoBox(document.querySelector('.info'));
 setTimeout(() => info.show(), 3000);
 
 let creatures: Creature[] = [];
+const container = document.getElementById('wrapper');
 
 const sketch = Sketch.create({
+  container,
   autopause: false,
-  container: document.getElementById('wrapper'),
+  fullscreen: false,
+  retina: true,
+  globals: false,
+  width: container.getBoundingClientRect().width,
+  height: container.getBoundingClientRect().height,
 
   createPopulation() {
     let i = COUNT;
@@ -55,6 +61,15 @@ const sketch = Sketch.create({
   },
   keydown() {
     if (this.keys.SPACE) this.toggle();
+  },
+  resize() {
+    const { width, height } = container.getBoundingClientRect();
+    this.canvas.style.height = `${height}px`;
+    this.canvas.style.width = `${width}px`;
+    this.canvas.height = height;
+    this.canvas.width = width;
+    this.height = height;
+    this.width = width;
   },
 });
 
