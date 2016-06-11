@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "expect": "1.20.1",
-    "sketch-js": "git+ssh://git@github.com:soulwire/sketch.js.git#21a58de"
+    "sketch-js": "git+ssh://git@github.com:soulwire/sketch.js.git#21a58de",
+    "utils": "git+ssh://git@github.com:rolyatmax/utils.git"
   }
 }

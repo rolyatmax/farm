@@ -1,13 +1,17 @@
 // @flow
 
 import Sketch from 'sketch-js';
-import { rand } from './utils';
+import InfoBox from './info_box';
+import { random } from 'utils';
 import { COUNT, PROCREATE_RATE, KILL_ZONE } from './settings';
 import {
   createCreature, createRandomDNA, drawCreature, updateCreature, mergeDNA,
 } from './creatures';
 import type { Creature } from './creatures'; // eslint-disable-line
 
+
+const info = new InfoBox(document.querySelector('.info'));
+setTimeout(() => info.show(), 3000);
 
 let creatures: Creature[] = [];
 
@@ -18,7 +22,7 @@ const sketch = Sketch.create({
   createPopulation() {
     let i = COUNT;
     while (i--) {
-      const position = [rand(this.width), rand(this.height)];
+      const position = [random(this.width), random(this.height)];
       const dna = createRandomDNA();
       const birthdate = this.millis;
       creatures.push(createCreature(position, birthdate, dna));
@@ -38,9 +42,9 @@ const sketch = Sketch.create({
     creatures.forEach((c) => updateCreature(this, c));
     const procreators = creatures.filter(() => Math.random() < PROCREATE_RATE);
     procreators.forEach((c) => {
-      const mate = procreators[rand(procreators.length)];
+      const mate = random(procreators);
       const dna = mergeDNA(c.dna, mate.dna);
-      const position = [rand(this.width), rand(this.height)];
+      const position = [random(this.width), random(this.height)];
       const birthdate = this.millis;
       creatures.push(createCreature(position, birthdate, dna));
     });

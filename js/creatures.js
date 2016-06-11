@@ -2,9 +2,12 @@
 
 import expect from 'expect';
 import { DEFAULT_LIFESPAN, MUTATION_RATE } from './settings';
-import { rand, pI, leftPad } from './utils';
-import type { Vector, Color } from './utils'; // eslint-disable-line
+import { random } from 'utils';
 
+type Vector = [number, number]; // each up to 3 digits
+type Color = [number, number, number, number]; // each up to 255
+
+export const pI = (val: string): number => parseInt(val, 10);
 
 export type Creature = {
   dna: string,
@@ -22,7 +25,7 @@ type CreatureProps = {
   velocity: Vector
 };
 
-const genes = '1234567890';
+const genes = '1234567890'.split('');
 
 export function dnaToProps(dna: string): CreatureProps {
   return {
@@ -44,16 +47,16 @@ export function createRandomDNA(): string {
   let dnaLength = 17;
   let dna = '';
   while (dnaLength--) {
-    dna += genes[rand(genes.length)];
+    dna += random(genes);
   }
   return dna;
 }
 
 export function mergeDNA(dna1: string, dna2: string): string {
-  const cut = rand(dna1.length);
+  const cut = random(dna1.length);
   const dna = (dna1.slice(0, cut) + dna2.slice(cut)).split('');
   for (let i = 0; i < dna.length; i++) {
-    if (Math.random() < MUTATION_RATE) dna[i] = genes[rand(genes.length)];
+    if (Math.random() < MUTATION_RATE) dna[i] = random(genes);
   }
   return dna.join('');
 }
@@ -89,9 +92,6 @@ export function updateCreature(ctx: Object, c: Creature): void {
 // ******** tests ********
 
 
-expect(leftPad(15, 3)).toBe('015');
-expect(leftPad(15, 2)).toBe('15');
-expect(leftPad('15', 4)).toBe('0015');
 expect(mergeDNA('abcdefg', 'hijklmn').length).toBe(7, 'mergeDNA: output length does not match');
 const dnaTestIn = ['12', '500', '250', '999', '21', '75', '30'].join('');
 const dnaTestOut = dnaToProps(dnaTestIn);
